@@ -22,16 +22,41 @@
                 cursor: pointer;
                 margin: 5px;
             }
+
+            .increment {
+            position: absolute;
+            color: orange;
+            font-weight: bold;
+            animation: moveUpFade 0.8s ease-out forwards;
+            pointer-events: none;
+            }
+
+            @keyframes moveUpFade {
+                0% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+            }
+
+            #container {
+                position: relative;
+            }    
+    
         </style>
     </head>
     <body>
-
-        <h1>Ferme de Carottes</h1>
-        <div id="carottes">Carottes : 0</div>
-        <div id="autoHarvesters">auto Harvesters : 0</div>
-        <button id="recolterBtn">Récolter une carotte</button>
-        <button id="buyHarvesterBtn">Acheter un auto-harvester (coût : 10 carottes)</button>
-        <button id="resetgame">Reset Game</button>
+        <div id="container">
+            <h1>Ferme de Carottes</h1>
+            <div id="carottes">Carottes : 0</div>
+            <div id="autoHarvesters">auto Harvesters : 0</div>
+            <button id="recolterBtn">Récolter une carotte</button>
+            <button id="buyHarvesterBtn">Acheter un auto-harvester (coût : 10 carottes)</button>
+            <button id="resetgame">Reset Game</button>
+        </div>
 
         <script>
             let carottes = 0;
@@ -50,13 +75,11 @@
                 localStorage.setItem("harvesterprice", harvesterprice);
             }
 
-            // FONCTION DE CHARGEMENT
             function charger() {
                 carottes = parseInt(localStorage.getItem("carottes")) || 0;
                 autoHarvesters = parseInt(localStorage.getItem("autoHarvesters")) || 0;
                 harvesterprice = parseInt(localStorage.getItem("harvesterprice")) || 10;
 
-                // MAJ affichage
                 carottesDiv.textContent = "Carottes : " + carottes;
                 autoHarvestersDiv.textContent = "auto Harvesters : " + autoHarvesters;
                 acheterBtn.textContent = "Acheter un auto-harvester (coût : " + harvesterprice + " carottes)";
@@ -65,8 +88,26 @@
             function recolter() {
                 carottes += 1;
                 carottesDiv.textContent = "Carottes : " + carottes;
+
+                const plusOne = document.createElement("span");
+                plusOne.textContent = "+1";
+                plusOne.classList.add("increment");
+
+                const rect = recolterBtn.getBoundingClientRect();
+                plusOne.style.left = (recolterBtn.offsetLeft + recolterBtn.offsetWidth / 2 - 10) + "px";
+                plusOne.style.top = (recolterBtn.offsetTop - 10) + "px";
+
+                document.getElementById("container").appendChild(plusOne);
+                const width = plusOne.offsetWidth;
+                plusOne.style.left = (recolterBtn.offsetLeft + recolterBtn.offsetWidth / 2 - width / 2) + "px";
+
+                setTimeout(() => {
+                    plusOne.remove();
+                }, 800);
+
                 sauvegarder();
             }
+
             function buyHarvester() {
                 if (carottes >= harvesterprice) {
                     carottes -= harvesterprice;
@@ -87,9 +128,26 @@
             acheterBtn.addEventListener("click", buyHarvester);
 
             setInterval(() => {
-                carottes += autoHarvesters * productionRate;
-                carottesDiv.textContent = "Carottes : " + carottes;
-                sauvegarder();
+                const gain = autoHarvesters * productionRate;
+                if (gain > 0) {
+                    carottes += gain;
+                    carottesDiv.textContent = "Carottes : " + carottes;
+
+                    const plusGain = document.createElement("span");
+                    plusGain.textContent = "+" + gain;
+                    plusGain.classList.add("increment");
+
+                    plusGain.style.left = (carottesDiv.offsetLeft + carottesDiv.offsetWidth / 2 - 10) + "px";
+                    plusGain.style.top = (carottesDiv.offsetTop - 20) + "px";
+
+                    document.getElementById("container").appendChild(plusGain);
+
+                    setTimeout(() => {
+                        plusGain.remove();
+                    }, 800);
+
+                    sauvegarder();
+                }
             }, 1000);
             
             function resetgameFunction() {
