@@ -64,7 +64,7 @@ function canBuyHarvester() {
 
 function buyHarvester() {
     if (!canBuyHarvester()) {
-        alert("Pas assez de carotte !")
+        alert("Pas assez de carotte !");
         return;
     }
 
@@ -79,7 +79,7 @@ function buyHarvester() {
 recolterBtn.addEventListener("click", recolter);
 acheterBtn.addEventListener("click", buyHarvester);
 
-function produceAutomaticaly() {
+function produceAutomatically() {
     const gain = gameState.autoHarvesters * gameState.productionRate;
 
     if (gain <= 0) {
@@ -92,7 +92,7 @@ function produceAutomaticaly() {
     sauvegarder();
 }
 
-setInterval(produceAutomaticaly, 1000);
+setInterval(produceAutomatically, 1000);
 
 function resetgameFunction() {
     if (confirm("Voulez-vous vraiment réinitialiser votre partie ?")) {
