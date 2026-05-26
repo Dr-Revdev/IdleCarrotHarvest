@@ -58,34 +58,41 @@ function recolter() {
     sauvegarder();
 }
 
+function canBuyHarvester() {
+    return gameState.carottes >= gameState.harvesterPrice;
+}
+
 function buyHarvester() {
-    if (gameState.carottes >= gameState.harvesterPrice) {
-        gameState.carottes -= gameState.harvesterPrice;
-        gameState.autoHarvesters += 1;
-        gameState.harvesterPrice = Math.floor(gameState.harvesterPrice * 1.2);
-
-        updateDisplay();
-
-        sauvegarder();
-    } else {
-        alert("Pas assez de carottes !");
+    if (!canBuyHarvester()) {
+        alert("Pas assez de carotte !")
+        return;
     }
+
+    gameState.carottes -= gameState.harvesterPrice;
+    gameState.autoHarvesters += 1;
+    gameState.harvesterPrice = Math.floor(gameState.harvesterPrice * 1.2);
+
+    updateDisplay();
+    sauvegarder();
 
 }
 recolterBtn.addEventListener("click", recolter);
 acheterBtn.addEventListener("click", buyHarvester);
 
-setInterval(() => {
+function produceAutomaticaly() {
     const gain = gameState.autoHarvesters * gameState.productionRate;
-    if (gain > 0) {
-        gameState.carottes += gain;
-        updateDisplay();
 
-        showIncrementText("+" + gain, carottesDiv);
-
-        sauvegarder();
+    if (gain <= 0) {
+        return;
     }
-}, 1000);
+
+    gameState.carottes += gain;
+    updateDisplay();
+    showIncrementText("+" + gain, carottesDiv);
+    sauvegarder();
+}
+
+setInterval(produceAutomaticaly, 1000);
 
 function resetgameFunction() {
     if (confirm("Voulez-vous vraiment réinitialiser votre partie ?")) {
