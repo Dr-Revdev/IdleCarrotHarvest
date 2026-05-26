@@ -1,13 +1,13 @@
-export const carottesDiv = document.getElementById("carottes");
-export const recolterBtn = document.getElementById("recolterBtn");
-export const acheterBtn = document.getElementById("buyHarvesterBtn");
+export const carrotsDiv = document.getElementById("carrots");
+export const harvestBtn = document.getElementById("harvestBtn");
+export const buyBtn = document.getElementById("buyHarvesterBtn");
 export const autoHarvestersDiv = document.getElementById("autoHarvesters");
 export const resetgameBtn = document.getElementById("resetgame");
 
 export function updateDisplay(gameState) {
-    carottesDiv.textContent = "Carottes : " + gameState.carottes;
+    carrotsDiv.textContent = "Carottes : " + gameState.carrots;
     autoHarvestersDiv.textContent = "auto Harvesters : " + gameState.autoHarvesters;
-    acheterBtn.textContent = "Acheter un auto-harvester (coût : " + gameState.harvesterPrice + " carottes)";
+    buyBtn.textContent = "Acheter un auto-harvester (coût : " + gameState.harvesterPrice + " carottes)";
 }
 
 export function showIncrementText(text, targetElement) {

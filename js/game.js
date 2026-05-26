@@ -1,18 +1,18 @@
-import { gameState } from "./state.js";
 import { saveGame, loadGame } from "./storage.js";
-import { carottesDiv, recolterBtn, acheterBtn, resetgameBtn, updateDisplay, showIncrementText } from "./ui.js";
+import { carrotsDiv, harvestBtn, buyBtn, resetgameBtn, updateDisplay, showIncrementText } from "./ui.js";
+import { gameState, initialGameState } from "./state.js";
 
 function harvestCarrot() {
-    gameState.carottes += 1;
+    gameState.carrots += 1;
     updateDisplay(gameState);
 
-    showIncrementText("+1", recolterBtn);
+    showIncrementText("+1", harvestBtn);
 
     saveGame();
 }
 
 function canBuyHarvester() {
-    return gameState.carottes >= gameState.harvesterPrice;
+    return gameState.carrots >= gameState.harvesterPrice;
 }
 
 function buyHarvester() {
@@ -21,7 +21,7 @@ function buyHarvester() {
         return;
     }
 
-    gameState.carottes -= gameState.harvesterPrice;
+    gameState.carrots -= gameState.harvesterPrice;
     gameState.autoHarvesters += 1;
     gameState.harvesterPrice = Math.floor(gameState.harvesterPrice * 1.2);
 
@@ -38,9 +38,9 @@ function produceAutomatically() {
         return;
     }
 
-    gameState.carottes += gain;
+    gameState.carrots += gain;
     updateDisplay(gameState);
-    showIncrementText("+" + gain, carottesDiv);
+    showIncrementText("+" + gain, carrotsDiv);
     saveGame();
 }
 
@@ -51,17 +51,15 @@ function resetGame() {
         return;
     }
 
-    gameState.carottes = 0;
-    gameState.autoHarvesters = 0;
-    gameState.harvesterPrice = 10;
+    Object.assign(gameState, initialGameState);
 
     updateDisplay(gameState);
     saveGame();
 }
 
 export function startGame() {
-    recolterBtn.addEventListener("click", harvestCarrot);
-    acheterBtn.addEventListener("click", buyHarvester);
+    harvestBtn.addEventListener("click", harvestCarrot);
+    buyBtn.addEventListener("click", buyHarvester);
     resetgameBtn.addEventListener("click", resetGame);
 
     loadGame();

@@ -9,7 +9,7 @@ body {
     background-color: #49ad49;
 }
 h1 { margin-bottom: 20px; }
-#carottes, #autoHarvesters { font-size: 24px; margin-bottom: 20px; }
+#carrots, #autoHarvesters { font-size: 24px; margin-bottom: 20px; }
 button {
     padding: 10px 20px;
     font-size: 18px;
